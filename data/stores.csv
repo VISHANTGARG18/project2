@@ -1,0 +1,9 @@
+store_id,store_name,channel,region,city,manager_name
+101,Lumina E-Commerce Store,Online,North America East,New York,Sarah Jenkins
+102,Lumina New York Flagship,Retail Store,North America East,New York,Marcus Vance
+103,Lumina San Francisco Hub,Retail Store,North America West,San Francisco,Elena Rostova
+104,Lumina Seattle Tech Retail,Retail Store,North America West,Seattle,David Kim
+105,Lumina London Concept Store,Retail Store,Europe Central,London,Arthur Pendelton
+106,Lumina Berlin Design Center,Retail Store,Europe Central,Berlin,Greta Weber
+107,Lumina Tokyo Ginza Outlet,Retail Store,Asia Pacific,Tokyo,Kenji Sato
+108,Lumina Sydney Harbour Retail,Retail Store,Asia Pacific,Sydney,Chloe Bennett

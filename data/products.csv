@@ -1,0 +1,21 @@
+product_id,product_name,category,subcategory,unit_cost,unit_price,is_active
+1001,Lumina Ergonomic Executive Chair,Premium Home Goods,Furniture,180.0,450.0,1
+1002,Lumina Standing Desk Pro,Premium Home Goods,Furniture,290.0,680.0,1
+1003,Aura Ambient LED Desk Lamp,Premium Home Goods,Lighting,25.0,89.0,1
+1004,Minimalist Bamboo Bookshelf,Premium Home Goods,Furniture,65.0,160.0,1
+1005,Artisan Ceramic Coffee Set,Premium Home Goods,Kitchenware,18.0,55.0,1
+1006,Cast Iron Dutch Oven 5Qt,Premium Home Goods,Kitchenware,42.0,130.0,1
+1007,Luxury Memory Foam Pillow Pair,Premium Home Goods,Bedding,22.0,75.0,1
+1008,Lumina Noise-Cancelling Headphones,Smart Electronics,Audio,85.0,240.0,1
+1009,Lumina Wireless Soundbar 5.1,Smart Electronics,Audio,110.0,320.0,1
+1010,Smart Climate Controller Hub,Smart Electronics,Home Automation,40.0,119.0,1
+1011,"Ultra-HD 4K Smart Monitor 32""",Smart Electronics,Displays,210.0,520.0,1
+1012,Ergonomic Wireless Trackball Mouse,Smart Electronics,Accessories,18.0,49.0,1
+1013,Mechanical Backlit Keyboard,Smart Electronics,Accessories,32.0,95.0,1
+1014,Smart Security Camera 2-Pack,Smart Electronics,Home Automation,55.0,149.0,1
+1015,Lumina All-Weather Patio Set (4-pc),Outdoor Living,Patio Furniture,340.0,890.0,1
+1016,Portable Stainless Steel Smokeless Grill,Outdoor Living,Cooking & Grilling,75.0,210.0,1
+1017,"Solar Power Bank & Lantern 20,000mAh",Outdoor Living,Gear & Tech,15.0,45.0,1
+1018,Insulated Stainless Steel Cooler 45L,Outdoor Living,Gear & Tech,60.0,175.0,1
+1019,Waterproof Canvas Camping Tent 4-Person,Outdoor Living,Gear & Tech,95.0,260.0,1
+1020,Teak Wood Garden Bench,Outdoor Living,Patio Furniture,120.0,310.0,1
