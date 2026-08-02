@@ -20,6 +20,8 @@ def render_product_studio_tab(df_filtered: pd.DataFrame):
         st.warning("No data available for active filters.")
         return
 
+    plotly_template = st.session_state.get('plotly_template', 'plotly_dark')
+
     # 1. Product Aggregation Matrix
     prod_agg = df_filtered.groupby(['product_name', 'category', 'subcategory']).agg(
         total_units_sold=('quantity', 'sum'),
@@ -88,7 +90,7 @@ def render_product_studio_tab(df_filtered: pd.DataFrame):
             title="Product Revenue vs. Net Profit (Bubble Size = Units Sold)"
         )
         fig_scatter.update_traces(textposition='top center')
-        fig_scatter.update_layout(template="plotly_dark", height=420, margin=dict(l=10, r=10, t=35, b=10))
+        fig_scatter.update_layout(template=plotly_template, height=420, margin=dict(l=10, r=10, t=35, b=10))
         st.plotly_chart(fig_scatter, use_container_width=True)
 
     with col_pareto:
@@ -102,7 +104,7 @@ def render_product_studio_tab(df_filtered: pd.DataFrame):
             title="ABC Category Product Counts",
             color_discrete_sequence=["#10B981", "#F59E0B", "#EF4444"]
         )
-        fig_pareto.update_layout(template="plotly_dark", height=420, margin=dict(l=10, r=10, t=35, b=10))
+        fig_pareto.update_layout(template=plotly_template, height=420, margin=dict(l=10, r=10, t=35, b=10))
         st.plotly_chart(fig_pareto, use_container_width=True)
 
     st.markdown("---")
@@ -167,5 +169,5 @@ def render_product_studio_tab(df_filtered: pd.DataFrame):
             ]
         }
     ))
-    fig_gauge.update_layout(template="plotly_dark", height=280, margin=dict(l=20, r=20, t=40, b=20))
+    fig_gauge.update_layout(template=plotly_template, height=280, margin=dict(l=20, r=20, t=40, b=20))
     st.plotly_chart(fig_gauge, use_container_width=True)
