@@ -4,6 +4,7 @@
 [![Python](https://img.shields.io/badge/ETL%20%26%20Data-Python%203.11-3776AB?style=flat&logo=python)](scripts/generate_synthetic_data.py)
 [![SQL](https://img.shields.io/badge/SQL-Advanced%20ANSI-FF6F00?style=flat&logo=databricks)](sql/)
 [![Tableau](https://img.shields.io/badge/Dashboard-Tableau%20Public-E97627?style=flat&logo=tableau)](docs/tableau_specifications.md)
+[![Streamlit](https://img.shields.io/badge/Web%20App-Streamlit-FF4B4B?style=flat&logo=streamlit)](scripts/app.py)
 
 ---
 
@@ -30,6 +31,8 @@ erDiagram
         string channel
         string region
         string city
+        string state
+        string country
         string manager_name
     }
 
@@ -102,10 +105,15 @@ retil project/
 ├── scripts/
 │   ├── generate_synthetic_data.py # Data generator engine modeling seasonal noise & returns
 │   ├── etl_pipeline.py            # Automated ingestion & validation script into SQLite
-│   └── sales_forecast.py          # Stretch: Q1 2026 sales & profit forecasting script
+│   ├── sales_forecast.py          # Stretch: Q1 2026 sales & profit forecasting script
+│   ├── market_basket_analysis.py  # Stretch: Support, Confidence & Lift co-purchasing mining
+│   ├── generate_report.py         # Stretch: Automated markdown executive report generator
+│   └── app.py                     # Stretch: Streamlit interactive web dashboard app
 ├── docs/
 │   ├── data_dictionary.md         # Column-by-column metadata table & sample values
 │   ├── business_insights.md        # 7 quantified executive findings & strategic recommendations
+│   ├── market_basket_analysis.md   # Market basket co-purchasing association rules
+│   ├── executive_summary_report.md# Automated executive performance summary report
 │   ├── interview_qa.md             # 12 technical and STAR behavioral interview Q&As
 │   └── tableau_specifications.md   # Tableau dashboard layout, calculated fields & action filters
 └── README.md                      # Primary project portfolio landing page
@@ -118,11 +126,11 @@ retil project/
 1. **Online Channel Margin Drag (3.96% Erosion)**:  
    The Online E-Commerce channel generated $2.84M in revenue but achieved a **56.53% net margin**, compared to **60.49%–60.88%** in physical flagship stores. Uncontrolled online discounting (8.62% avg discount rate) and absorbed shipping costs eroded ~$85,000 in bottom-line profits.
 2. **RFM "Champions" Profit Concentration (61.3%)**:  
-   Applying 4-stage layered CTE RFM customer segmentation identified that **28.98% of customers (364 Champions)** contribute **$1.77M in net profit (61.3% of total)** with an average customer spend of $8,178.02.
-3. **Q4 Seasonal Peak (35.8% Revenue)**:  
+   Applying 5-stage layered CTE RFM customer segmentation identified that **28.98% of customers (364 Champions)** contribute **$1.77M in net profit (61.3% of total)** with an average customer spend of $8,178.02.
+3. **Market Basket Cross-Selling**:  
+   Market basket association mining revealed strong product pairs with high Lift ratios (e.g. *Lumina Standing Desk Pro* co-purchased with *Aura Ambient LED Desk Lamp*), enabling automated checkout bundle discounts.
+4. **Q4 Seasonal Peak (35.8% Revenue)**:  
    November and December drive over one-third of annual net profits, surging **85.3% MoM** in November due to holiday electronics and gift purchases.
-4. **High Repeat Loyalty (81.53%)**:  
-   Across 1,256 active customers, **81.53% (1,024 customers)** placed repeat orders over 24 months, demonstrating exceptional customer retention and long-term lifetime value (LTV).
 
 *Read the complete executive report in [docs/business_insights.md](docs/business_insights.md).*
 
@@ -136,8 +144,8 @@ retil project/
 
 ### Step 1: Clone Repository & Generate Dataset
 ```bash
-git clone https://github.com/your-username/lumina-retail-analytics.git
-cd lumina-retail-analytics
+git clone https://github.com/VISHANTGARG18/project2.git
+cd project2
 
 # Generate synthetic transaction dataset (16,800+ line items)
 python3 scripts/generate_synthetic_data.py
@@ -149,40 +157,25 @@ python3 scripts/generate_synthetic_data.py
 python3 scripts/etl_pipeline.py
 ```
 
-### Step 3: Execute Analytical SQL Queries
+### Step 3: Run Market Basket Analysis & Automated Executive Report
 ```bash
-# Run monthly MoM/YoY growth query
-sqlite3 database/lumina_retail.db < sql/01_monthly_trends_mom_yoy.sql
-
-# Run 5-stage CTE RFM customer segmentation
-sqlite3 database/lumina_retail.db < sql/04_rfm_segmentation.sql
-```
-
-### Step 4: Run Q1 2026 Sales Forecast Model
-```bash
+python3 scripts/market_basket_analysis.py
+python3 scripts/generate_report.py
 python3 scripts/sales_forecast.py
 ```
 
----
-
-## 6. Tableau Executive Dashboard
-
-A live interactive executive dashboard built in Tableau Public allows stakeholders to filter financial performance across regions, channels, product categories, and RFM customer segments.
-
-- **Calculated Fields & Metrics**: Net Revenue, Net Profit, Profit Margin %, AOV, Repeat Rate.
-- **Interactivity**: Dynamic Parameter Metric Toggle + Action Filters linking region map to product rankings.
-- **Specification Blueprint**: [docs/tableau_specifications.md](docs/tableau_specifications.md).
-
-*(Include link & screenshot of published Tableau Public dashboard here)*
+### Step 4: Launch Interactive Streamlit Web App
+```bash
+pip install streamlit pandas
+streamlit run scripts/app.py
+```
 
 ---
 
-## 7. Resume & Portfolio Bullet Points
-
-Here are 5 quantified resume bullets ready to copy directly to your resume or LinkedIn:
+## 6. Resume & Portfolio Bullet Points
 
 - **Engineered an end-to-end retail analytics architecture** in SQLite querying 16,800+ transaction line items across 2 full years (2024–2025), building a pre-computed reporting view (`vw_sales_analytics`) that reduced query complexity for executive reporting.
 - **Authored advanced SQL analytics suite** utilizing window functions (`LAG`, `DENSE_RANK`, `SUM() OVER`) and multi-step CTE chains to calculate MoM/YoY growth rates, product category rankings, and 30-day moving average revenue trends.
 - **Developed a 5-stage CTE RFM customer segmentation model** classifying 1,500 customers into strategic tiers, revealing that 28.98% of customers ("Champions") generated 61.3% of total net profit ($1.77M).
-- **Uncovered $85,000 annual margin erosion** in the Online E-Commerce channel by performing cross-tabulation analysis of discount rates and fulfillment shipping costs against physical flagship retail stores.
-- **Created a Python ETL & sales forecasting pipeline** that automated CSV ingestion, executed database integrity assertions (0 orphaned keys, 0 invalid prices), and projected Q1 2026 net revenue bounds with ±5% confidence intervals.
+- **Built a Market Basket Association Engine** in Python computing Support, Confidence, and Lift metrics to identify high-converting product checkout cross-sell bundles.
+- **Created a Streamlit interactive web dashboard** & automated executive report generator allowing stakeholders to filter omnichannel sales performance, track margins, and view Q1 2026 forecast projections.
