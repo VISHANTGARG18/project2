@@ -1,7 +1,7 @@
 """
 Tab 1: Executive Overview Command Center Component.
-Features large KPI cards with Deltas & sparklines, executive alerts, AI insights,
-Plotly dual-axis trend graphs, interactive maps, and breakdown visuals.
+Features Groww / Stripe inspired high-aesthetic KPI cards, Plotly smooth-curved trend graphs,
+interactive maps, and AI insights cards.
 """
 
 import pandas as pd
@@ -16,7 +16,7 @@ from .ai_insights import render_ai_executive_insights
 
 def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFrame):
     """Renders the Tab 1 Executive Command Center."""
-    st.header("🏠 Executive Command Center")
+    st.header("⚡ Executive Command Center")
     st.markdown("Real-time omnichannel sales performance, operational alerts, and profitability metrics.")
 
     if df_filtered.empty or df_filtered['order_date'].isnull().all():
@@ -45,36 +45,36 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
     
     curr_kpis, deltas = calculate_kpi_deltas(df_filtered, df_prior)
 
-    # 3. Render 8 Large Glassmorphism KPI Cards with Deltas
+    # 3. Render 8 High-Aesthetic Groww-Style KPI Cards
     col1, col2, col3, col4 = st.columns(4)
     col5, col6, col7, col8 = st.columns(4)
 
-    def render_kpi_card(container, title, value_str, delta_val, is_pct=False):
+    def render_groww_kpi(container, title, value_str, delta_val):
         arrow = "▲" if delta_val >= 0 else "▼"
-        delta_class = "kpi-delta-positive" if delta_val >= 0 else "kpi-delta-negative"
+        badge_class = "groww-badge-pos" if delta_val >= 0 else "groww-badge-neg"
         delta_str = f"{arrow} {abs(delta_val):.1f}% vs prior"
         
         container.markdown(f"""
-        <div class='glass-card'>
-            <div class='kpi-title'>{title}</div>
-            <div class='kpi-value'>{value_str}</div>
-            <div class='{delta_class}'>{delta_str}</div>
+        <div class='groww-card'>
+            <div class='groww-title'>{title}</div>
+            <div class='groww-value'>{value_str}</div>
+            <div><span class='{badge_class}'>{delta_str}</span></div>
         </div>
         """, unsafe_allow_html=True)
 
-    render_kpi_card(col1, "Net Revenue", fmt_currency(curr_kpis['net_revenue']), deltas['net_revenue'])
-    render_kpi_card(col2, "Net Profit", fmt_currency(curr_kpis['net_profit']), deltas['net_profit'])
-    render_kpi_card(col3, "Profit Margin", fmt_percent(curr_kpis['margin_pct']), deltas['margin_pct'])
-    render_kpi_card(col4, "Completed Orders", fmt_number(curr_kpis['total_orders']), deltas['total_orders'])
+    render_groww_kpi(col1, "Net Revenue", fmt_currency(curr_kpis['net_revenue']), deltas['net_revenue'])
+    render_groww_kpi(col2, "Net Profit", fmt_currency(curr_kpis['net_profit']), deltas['net_profit'])
+    render_groww_kpi(col3, "Profit Margin", fmt_percent(curr_kpis['margin_pct']), deltas['margin_pct'])
+    render_groww_kpi(col4, "Completed Orders", fmt_number(curr_kpis['total_orders']), deltas['total_orders'])
 
-    render_kpi_card(col5, "Avg Order Value (AOV)", fmt_currency_exact(curr_kpis['aov']), deltas['aov'])
-    render_kpi_card(col6, "Repeat Buyer Rate", fmt_percent(curr_kpis['repeat_rate_pct']), deltas['repeat_rate_pct'])
-    render_kpi_card(col7, "Total Customers", fmt_number(curr_kpis['total_customers']), deltas['total_customers'])
-    render_kpi_card(col8, "Rev per Customer", fmt_currency_exact(curr_kpis['rev_per_customer']), deltas['rev_per_customer'])
+    render_groww_kpi(col5, "Avg Order Value (AOV)", fmt_currency_exact(curr_kpis['aov']), deltas['aov'])
+    render_groww_kpi(col6, "Repeat Buyer Rate", fmt_percent(curr_kpis['repeat_rate_pct']), deltas['repeat_rate_pct'])
+    render_groww_kpi(col7, "Total Customers", fmt_number(curr_kpis['total_customers']), deltas['total_customers'])
+    render_groww_kpi(col8, "Rev per Customer", fmt_currency_exact(curr_kpis['rev_per_customer']), deltas['rev_per_customer'])
 
-    st.markdown("---")
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    # 4. Interactive Plotly Charts: Revenue vs Profit Trend (MoM / YoY)
+    # 4. High-Aesthetic Smooth Spline Plotly Chart
     st.subheader("📈 Revenue & Net Profit Growth Trends")
     
     monthly = df_filtered.set_index('order_date').resample('ME')[['net_revenue', 'net_profit']].sum().reset_index()
@@ -86,22 +86,22 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
         y=monthly['net_revenue'],
         name="Net Revenue ($)",
         mode="lines+markers",
-        line=dict(color="#38BDF8", width=3),
+        line=dict(color="#00D09C", width=3.5, shape='spline'),
         fill='tozeroy',
-        fillcolor='rgba(56, 189, 248, 0.1)'
+        fillcolor='rgba(0, 208, 156, 0.08)'
     ))
     fig_trend.add_trace(go.Scatter(
         x=monthly['order_year_month'],
         y=monthly['net_profit'],
         name="Net Profit ($)",
         mode="lines+markers",
-        line=dict(color="#10B981", width=3),
+        line=dict(color="#00B8D9", width=3.5, shape='spline'),
         fill='tozeroy',
-        fillcolor='rgba(16, 185, 129, 0.1)'
+        fillcolor='rgba(0, 184, 217, 0.08)'
     ))
     fig_trend.update_layout(
         template=plotly_template,
-        height=380,
+        height=390,
         margin=dict(l=20, r=20, t=30, b=20),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         hovermode="x unified"
@@ -128,7 +128,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
                 color="net_revenue",
                 hover_name="store_country",
                 hover_data=["store_region", "net_revenue", "net_profit"],
-                color_continuous_scale="Viridis",
+                color_continuous_scale="Tealgrn",
                 title="Global Revenue Distribution by Country"
             )
         else:
@@ -139,7 +139,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
                 size="net_revenue",
                 color="net_profit",
                 hover_name="store_country",
-                color_continuous_scale="Tealgrn",
+                color_continuous_scale="Emerald",
                 title="Global Profitability Bubble Map"
             )
 
@@ -154,7 +154,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             x="channel",
             y=["net_revenue", "net_profit"],
             barmode="group",
-            color_discrete_sequence=["#38BDF8", "#10B981"],
+            color_discrete_sequence=["#00D09C", "#00B8D9"],
             title="Online vs Retail Store Net Revenue & Profit"
         )
         fig_chan.update_layout(template=plotly_template, height=380, margin=dict(l=10, r=10, t=35, b=10))
@@ -170,8 +170,8 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             cat_agg,
             values="net_revenue",
             names="category",
-            color_discrete_sequence=px.colors.qualitative.Pastel,
-            hole=0.4
+            color_discrete_sequence=["#00D09C", "#00B8D9", "#FFB300"],
+            hole=0.5
         )
         fig_cat.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
         st.plotly_chart(fig_cat, use_container_width=True)
@@ -184,7 +184,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             x="net_profit",
             y="store_name",
             orientation="h",
-            color_discrete_sequence=["#F59E0B"]
+            color_discrete_sequence=["#00D09C"]
         )
         fig_store.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
         st.plotly_chart(fig_store, use_container_width=True)
@@ -197,7 +197,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             x="net_revenue",
             y="product_name",
             orientation="h",
-            color_discrete_sequence=["#8B5CF6"]
+            color_discrete_sequence=["#00B8D9"]
         )
         fig_prod.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
         st.plotly_chart(fig_prod, use_container_width=True)

@@ -1,148 +1,167 @@
 """
-Custom Theme, Glassmorphism Styling, and Full Light/Dark Mode CSS for Lumina Platform.
+Groww / Stripe / Linear Premium Aesthetic Theme & Dynamic CSS for Lumina Platform.
 """
 
 import streamlit as st
 
 def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
-    """Injects comprehensive Light/Dark executive custom CSS styles into Streamlit app."""
+    """Injects high-end Groww / Stripe inspired CSS aesthetics into Streamlit app."""
     is_light = "Light" in theme_mode
 
-    # Set Plotly template in session state
     st.session_state['plotly_template'] = "plotly_white" if is_light else "plotly_dark"
 
     if is_light:
-        bg_main = "#F8FAFC"
-        bg_sidebar = "#F1F5F9"
-        card_bg = "#FFFFFF"
-        card_border = "rgba(0, 0, 0, 0.08)"
-        card_shadow = "0 4px 20px 0 rgba(0, 0, 0, 0.05)"
-        text_primary = "#0F172A"
+        bg_main = "#F4F7FA"
+        bg_sidebar = "#FFFFFF"
+        card_bg = "linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)"
+        card_border = "1px solid rgba(0, 208, 156, 0.15)"
+        card_shadow = "0 10px 30px -5px rgba(0, 208, 156, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04)"
+        text_primary = "#0B0F17"
         text_secondary = "#475569"
-        status_bg = "#E2E8F0"
-        status_border = "rgba(0, 0, 0, 0.1)"
-        tab_active = "#311B92"
+        status_bg = "#FFFFFF"
+        status_border = "1px solid rgba(0, 208, 156, 0.2)"
+        accent_color = "#00D09C"
     else:
-        bg_main = "#0F172A"
-        bg_sidebar = "#0B0F19"
-        card_bg = "rgba(30, 41, 59, 0.75)"
-        card_border = "rgba(255, 255, 255, 0.12)"
-        card_shadow = "0 8px 32px 0 rgba(0, 0, 0, 0.25)"
+        bg_main = "#0B0F17"
+        bg_sidebar = "#111622"
+        card_bg = "linear-gradient(135deg, rgba(18, 24, 38, 0.85) 0%, rgba(15, 20, 32, 0.85) 100%)"
+        card_border = "1px solid rgba(0, 208, 156, 0.15)"
+        card_shadow = "0 12px 35px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.05)"
         text_primary = "#F8FAFC"
         text_secondary = "#94A3B8"
-        status_bg = "rgba(15, 23, 42, 0.8)"
-        status_border = "rgba(255, 255, 255, 0.08)"
-        tab_active = "#FFB300"
+        status_bg = "rgba(18, 24, 38, 0.9)"
+        status_border = "1px solid rgba(0, 208, 156, 0.2)"
+        accent_color = "#00D09C"
 
     css = f"""
     <style>
-        /* Global Page Background & Text Overrides */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
+
+        /* Global Font & Background Overrides */
+        html, body, [class*="css"], .stApp {{
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        }}
+
         .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {{
             background-color: {bg_main} !important;
             color: {text_primary} !important;
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 208, 156, 0.04), transparent 60%);
         }}
 
         [data-testid="stSidebar"] {{
             background-color: {bg_sidebar} !important;
+            border-right: 1px solid rgba(0, 208, 156, 0.12) !important;
         }}
 
-        /* Headings & Text Color */
-        h1, h2, h3, h4, h5, h6, .stMarkdown p {{
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {{
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: 700 !important;
             color: {text_primary} !important;
+            letter-spacing: -0.02em !important;
         }}
 
-        /* Tabs Styling */
-        .stTabs [data-baseweb="tab"] {{
-            color: {text_secondary} !important;
-            font-weight: 600;
-        }}
-
-        .stTabs [aria-selected="true"] {{
-            color: {tab_active} !important;
-            border-bottom-color: {tab_active} !important;
-        }}
-
-        /* Glassmorphism Metric Cards */
-        .glass-card {{
+        /* Groww Premium Metric Card */
+        .groww-card {{
             background: {card_bg};
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid {card_border};
+            border-radius: 16px;
+            padding: 22px 20px;
+            border: {card_border};
             box-shadow: {card_shadow};
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            margin-bottom: 15px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
         }}
 
-        .glass-card:hover {{
-            transform: translateY(-2px);
+        .groww-card:hover {{
+            transform: translateY(-4px);
+            border-color: rgba(0, 208, 156, 0.4);
+            box-shadow: 0 20px 40px -10px rgba(0, 208, 156, 0.15);
         }}
 
-        .kpi-title {{
-            font-size: 0.85rem;
-            font-weight: 600;
+        .groww-title {{
+            font-size: 0.78rem;
+            font-weight: 700;
             color: {text_secondary};
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
         }}
 
-        .kpi-value {{
-            font-size: 1.8rem;
+        .groww-value {{
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.95rem;
+            font-weight: 800;
+            color: {text_primary};
+            letter-spacing: -0.03em;
+            margin: 4px 0 8px 0;
+        }}
+
+        .groww-badge-pos {{
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 208, 156, 0.12);
+            color: #00D09C;
+            font-size: 0.8rem;
             font-weight: 700;
-            color: {text_primary};
-            margin: 5px 0;
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 208, 156, 0.25);
         }}
 
-        .kpi-delta-positive {{
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #10B981;
-        }}
-
-        .kpi-delta-negative {{
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #EF4444;
-        }}
-
-        /* Executive Alert Banner */
-        .alert-banner-danger {{
+        .groww-badge-neg {{
+            display: inline-flex;
+            align-items: center;
             background: rgba(239, 68, 68, 0.12);
-            border-left: 4px solid #EF4444;
-            padding: 12px 18px;
-            border-radius: 6px;
-            color: {text_primary};
-            margin-bottom: 12px;
-            font-weight: 500;
+            color: #FF5252;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.25);
         }}
 
-        .alert-banner-warning {{
-            background: rgba(245, 158, 11, 0.12);
-            border-left: 4px solid #F59E0B;
-            padding: 12px 18px;
-            border-radius: 6px;
+        /* Groww Executive Alert Banner */
+        .groww-alert {{
+            background: {card_bg};
+            border-radius: 12px;
+            padding: 14px 20px;
+            border-left: 5px solid {accent_color};
+            border-top: {card_border};
+            border-right: {card_border};
+            border-bottom: {card_border};
+            box-shadow: {card_shadow};
+            margin-bottom: 14px;
+            font-size: 0.92rem;
             color: {text_primary};
-            margin-bottom: 12px;
-            font-weight: 500;
-        }}
-
-        .alert-banner-success {{
-            background: rgba(16, 185, 129, 0.12);
-            border-left: 4px solid #10B981;
-            padding: 12px 18px;
-            border-radius: 6px;
-            color: {text_primary};
-            margin-bottom: 12px;
-            font-weight: 500;
         }}
 
         /* System Status Panel */
         .status-panel {{
             background: {status_bg};
-            border: 1px solid {status_border};
-            border-radius: 8px;
-            padding: 10px 15px;
+            border: {status_border};
+            border-radius: 12px;
+            padding: 12px 20px;
             font-size: 0.85rem;
             color: {text_secondary};
+            box-shadow: {card_shadow};
+        }}
+
+        /* Tab Buttons Styling */
+        .stTabs [data-baseweb="tab"] {{
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 1.05rem !important;
+            font-weight: 600 !important;
+            color: {text_secondary} !important;
+            padding: 10px 20px !important;
+            border-radius: 8px !important;
+        }}
+
+        .stTabs [aria-selected="true"] {{
+            color: {accent_color} !important;
+            background: rgba(0, 208, 156, 0.08) !important;
+            border-bottom: 3px solid {accent_color} !important;
         }}
     </style>
     """

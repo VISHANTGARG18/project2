@@ -1,6 +1,6 @@
 """
 AI Executive Insights & Directives Engine Component.
-Generates automated data-driven business insights and recommendations.
+Generates automated data-driven business insights and recommendations with Groww aesthetics.
 """
 
 import pandas as pd
@@ -29,13 +29,13 @@ def render_ai_executive_insights(df: pd.DataFrame):
 
     insights = [
         {
-            "icon": "📈",
+            "icon": "⚡",
             "title": f"Top Revenue Category Driver ({top_cat})",
             "finding": f"**{top_cat}** generated {top_cat_pct:.1f}% of total net revenue (${cat_contrib.max():,.2f}).",
             "recommendation": f"Expand product inventory and marketing budget in **{top_cat}** ahead of Q4 seasonal spikes."
         },
         {
-            "icon": "💸",
+            "icon": "💎",
             "title": "Online Channel Discount Margin Erosion",
             "finding": f"Online sales average **{online_disc:.2f}% promotional discounts**, compared to **{store_disc:.2f}%** in physical retail flagships.",
             "recommendation": "Cap online promotional discount codes at 15% and establish a $150 minimum order threshold for free shipping to recover ~$85K annually."
@@ -66,14 +66,14 @@ def render_ai_executive_insights(df: pd.DataFrame):
         target_col = col_a if idx % 2 == 0 else col_b
         with target_col:
             st.markdown(f"""
-            <div class='glass-card'>
-                <div style='font-size: 1.1rem; font-weight: 700; color: #FFB300; margin-bottom: 5px;'>
+            <div class='groww-card'>
+                <div style='font-size: 1.05rem; font-weight: 700; color: #00D09C; margin-bottom: 6px; font-family: Outfit, sans-serif;'>
                     {ins['icon']} {ins['title']}
                 </div>
-                <div style='font-size: 0.9rem; color: #E2E8F0; margin-bottom: 8px;'>
+                <div style='font-size: 0.9rem; margin-bottom: 10px;'>
                     <b>Finding:</b> {ins['finding']}
                 </div>
-                <div style='font-size: 0.85rem; color: #38BDF8; background: rgba(56, 189, 248, 0.1); padding: 8px; border-radius: 6px;'>
+                <div style='font-size: 0.85rem; color: #00B8D9; background: rgba(0, 184, 217, 0.08); padding: 10px; border-radius: 8px; border: 1px solid rgba(0, 184, 217, 0.2);'>
                     💡 <b>Recommendation:</b> {ins['recommendation']}
                 </div>
             </div>
