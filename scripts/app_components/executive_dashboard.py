@@ -128,7 +128,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
                 color="net_revenue",
                 hover_name="store_country",
                 hover_data=["store_region", "net_revenue", "net_profit"],
-                color_continuous_scale="Tealgrn",
+                color_continuous_scale="tealgrn",
                 title="Global Revenue Distribution by Country"
             )
         else:
@@ -139,7 +139,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
                 size="net_revenue",
                 color="net_profit",
                 hover_name="store_country",
-                color_continuous_scale="Emerald",
+                color_continuous_scale="emrld",
                 title="Global Profitability Bubble Map"
             )
 

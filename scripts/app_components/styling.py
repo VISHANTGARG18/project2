@@ -1,5 +1,5 @@
 """
-Groww / Stripe / Linear Premium Aesthetic Theme & Dynamic CSS for Lumina Platform.
+Groww / Stripe Premium Aesthetic Theme & Dynamic CSS for Lumina Platform.
 """
 
 import streamlit as st
@@ -14,13 +14,14 @@ def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
         bg_main = "#F4F7FA"
         bg_sidebar = "#FFFFFF"
         card_bg = "linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)"
-        card_border = "1px solid rgba(0, 208, 156, 0.15)"
+        card_border = "1px solid rgba(0, 208, 156, 0.2)"
         card_shadow = "0 10px 30px -5px rgba(0, 208, 156, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04)"
-        text_primary = "#0B0F17"
+        text_primary = "#0F172A"
         text_secondary = "#475569"
         status_bg = "#FFFFFF"
-        status_border = "1px solid rgba(0, 208, 156, 0.2)"
+        status_border = "1px solid rgba(0, 208, 156, 0.25)"
         accent_color = "#00D09C"
+        sidebar_text = "#0F172A"
     else:
         bg_main = "#0B0F17"
         bg_sidebar = "#111622"
@@ -32,6 +33,7 @@ def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
         status_bg = "rgba(18, 24, 38, 0.9)"
         status_border = "1px solid rgba(0, 208, 156, 0.2)"
         accent_color = "#00D09C"
+        sidebar_text = "#F8FAFC"
 
     css = f"""
     <style>
@@ -50,7 +52,18 @@ def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
 
         [data-testid="stSidebar"] {{
             background-color: {bg_sidebar} !important;
-            border-right: 1px solid rgba(0, 208, 156, 0.12) !important;
+            border-right: 1px solid rgba(0, 208, 156, 0.15) !important;
+        }}
+
+        /* Sidebar Text & Label Overrides for Light/Dark Mode Contrast */
+        [data-testid="stSidebar"] p,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] span,
+        [data-testid="stSidebar"] div,
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3 {{
+            color: {sidebar_text} !important;
         }}
 
         /* Typography */
