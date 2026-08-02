@@ -19,14 +19,22 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
     st.header("🏠 Executive Command Center")
     st.markdown("Real-time omnichannel sales performance, operational alerts, and profitability metrics.")
 
+    if df_filtered.empty or df_filtered['order_date'].isnull().all():
+        st.warning("⚠️ No sales transactions found matching the current global filter selection. Please adjust your date range or sidebar filters.")
+        return
+
     # 1. Executive Alert Banners
     render_executive_alerts(df_filtered)
 
-    # 2. Compute KPIs & Prior Period Deltas
-    # Determine prior period split for deltas
+    # 2. Compute KPIs & Prior Period Deltas safely
     max_d = df_filtered['order_date'].max()
     min_d = df_filtered['order_date'].min()
-    days_span = (max_d - min_d).days
+    
+    if pd.isna(min_d) or pd.isna(max_d):
+        st.warning("⚠️ Invalid date range in filtered records.")
+        return
+
+    days_span = max(int((max_d - min_d).days), 1)
     
     prior_start = min_d - pd.Timedelta(days=days_span + 1)
     prior_end = min_d - pd.Timedelta(days=1)
@@ -35,7 +43,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
     
     curr_kpis, deltas = calculate_kpi_deltas(df_filtered, df_prior)
 
-    # 3. Render 8 Large Glassmorphism KPI Cards with Deltas & Sparklines
+    # 3. Render 8 Large Glassmorphism KPI Cards with Deltas
     col1, col2, col3, col4 = st.columns(4)
     col5, col6, col7, col8 = st.columns(4)
 
