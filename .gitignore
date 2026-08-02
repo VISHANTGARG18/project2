@@ -1,3 +1,5 @@
+
+
 # macOS System Files
 .DS_Store
 .AppleDouble
@@ -36,7 +38,9 @@ ENV/
 *.pem
 *.key
 
-# Temporary files & Logs
+# Temporary files, Logs & Private PDF Documents
 *.log
 *.tmp
 *.db-journal
+*.pdf
+docs/*.pdf
