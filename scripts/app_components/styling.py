@@ -22,6 +22,8 @@ def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
         status_border = "1px solid rgba(0, 208, 156, 0.25)"
         accent_color = "#00D09C"
         sidebar_text = "#0F172A"
+        input_bg = "#FFFFFF"
+        input_border = "#CBD5E1"
     else:
         bg_main = "#0B0F17"
         bg_sidebar = "#111622"
@@ -34,6 +36,8 @@ def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
         status_border = "1px solid rgba(0, 208, 156, 0.2)"
         accent_color = "#00D09C"
         sidebar_text = "#F8FAFC"
+        input_bg = "#1A202C"
+        input_border = "rgba(255, 255, 255, 0.15)"
 
     css = f"""
     <style>
@@ -55,15 +59,31 @@ def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
             border-right: 1px solid rgba(0, 208, 156, 0.15) !important;
         }}
 
-        /* Sidebar Text & Label Overrides for Light/Dark Mode Contrast */
+        /* Sidebar Text & Label Overrides */
         [data-testid="stSidebar"] p,
         [data-testid="stSidebar"] label,
         [data-testid="stSidebar"] span,
-        [data-testid="stSidebar"] div,
         [data-testid="stSidebar"] h1,
         [data-testid="stSidebar"] h2,
         [data-testid="stSidebar"] h3 {{
             color: {sidebar_text} !important;
+        }}
+
+        /* Streamlit Input Controls Override (Selectboxes, Date inputs, Text inputs) */
+        div[data-baseweb="select"] > div, 
+        div[data-baseweb="input"] > div, 
+        .stDateInput input, 
+        .stTextInput input {{
+            background-color: {input_bg} !important;
+            color: {text_primary} !important;
+            border: 1px solid {input_border} !important;
+            border-radius: 8px !important;
+        }}
+
+        div[data-baseweb="select"] span, 
+        div[data-baseweb="select"] div,
+        div[data-baseweb="popover"] div {{
+            color: {text_primary} !important;
         }}
 
         /* Typography */
@@ -133,21 +153,6 @@ def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
             padding: 3px 10px;
             border-radius: 20px;
             border: 1px solid rgba(239, 68, 68, 0.25);
-        }}
-
-        /* Groww Executive Alert Banner */
-        .groww-alert {{
-            background: {card_bg};
-            border-radius: 12px;
-            padding: 14px 20px;
-            border-left: 5px solid {accent_color};
-            border-top: {card_border};
-            border-right: {card_border};
-            border-bottom: {card_border};
-            box-shadow: {card_shadow};
-            margin-bottom: 14px;
-            font-size: 0.92rem;
-            color: {text_primary};
         }}
 
         /* System Status Panel */
