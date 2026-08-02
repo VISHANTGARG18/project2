@@ -14,11 +14,15 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
 env/
 venv/
 ENV/
 .venv/
+
+# Tableau Temporary & Lock Files
+.~*
+*.twbr
+*.tmp
 
 # IDE & Editor Settings
 .vscode/
