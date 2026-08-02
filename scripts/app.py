@@ -20,6 +20,7 @@ st.set_page_config(
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "database", "lumina_retail.db")
+DOCS_DIR = os.path.join(BASE_DIR, "docs")
 
 @st.cache_data
 def load_analytics_data():
@@ -106,7 +107,7 @@ tab1, tab2, tab3 = st.tabs(["📈 Executive Dashboard", "👥 Customer RFM & Coh
 
 with tab1:
     st.subheader("Monthly Sales & Profitability Trends")
-    monthly_df = df_filtered.set_index('order_date').resample('M')[['net_revenue', 'net_profit']].sum().reset_index()
+    monthly_df = df_filtered.set_index('order_date').resample('ME')[['net_revenue', 'net_profit']].sum().reset_index()
     monthly_df['order_date'] = monthly_df['order_date'].dt.strftime('%Y-%m')
     
     st.line_chart(monthly_df.set_index('order_date')[['net_revenue', 'net_profit']])
@@ -138,7 +139,6 @@ with tab3:
     st.subheader("Market Basket Product Association Rules")
     st.markdown("Top product co-purchasing pairs analyzed across multi-item order baskets.")
     
-    # Read market_basket_analysis.md if available
     mb_path = os.path.join(DOCS_DIR, "market_basket_analysis.md")
     if os.path.exists(mb_path):
         with open(mb_path, "r", encoding="utf-8") as f:
