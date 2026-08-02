@@ -9,6 +9,7 @@ import streamlit as st
 import plotly.express as px
 from utils.rfm import compute_rfm_segments
 from utils.helpers import fmt_currency, fmt_percent, fmt_number
+from .styling import get_plotly_theme_dict
 
 def render_customer_intelligence_tab(df_filtered: pd.DataFrame):
     """Renders the Tab 3 Customer Analytics component."""
@@ -18,6 +19,9 @@ def render_customer_intelligence_tab(df_filtered: pd.DataFrame):
     if df_filtered.empty:
         st.warning("No data available for active filters.")
         return
+
+    theme_mode = st.session_state.get('theme_mode', 'Dark Mode 🌙')
+    theme_kwargs = get_plotly_theme_dict(theme_mode)
 
     # Compute RFM Segments
     rfm_df = compute_rfm_segments(df_filtered)
@@ -43,7 +47,7 @@ def render_customer_intelligence_tab(df_filtered: pd.DataFrame):
             title="Net Revenue by RFM Segment (Bar height = Revenue, Label = Customers)",
             color_discrete_sequence=px.colors.qualitative.Prism
         )
-        fig_rfm.update_layout(template="plotly_dark", height=350, margin=dict(l=10, r=10, t=35, b=10))
+        fig_rfm.update_layout(height=350, margin=dict(l=10, r=10, t=35, b=10), **theme_kwargs)
         st.plotly_chart(fig_rfm, use_container_width=True)
 
     with col_rfm_table:
@@ -98,7 +102,7 @@ def render_customer_intelligence_tab(df_filtered: pd.DataFrame):
             cust_monthly = cust_orders.set_index('order_date').resample('ME')['net_revenue'].sum().reset_index()
             cust_monthly['order_date'] = cust_monthly['order_date'].dt.strftime('%Y-%m')
             fig_cust_trend = px.line(cust_monthly, x='order_date', y='net_revenue', markers=True, title="Customer Spend Timeline")
-            fig_cust_trend.update_layout(template="plotly_dark", height=280, margin=dict(l=10, r=10, t=30, b=10))
+            fig_cust_trend.update_layout(height=280, margin=dict(l=10, r=10, t=30, b=10), **theme_kwargs)
             st.plotly_chart(fig_cust_trend, use_container_width=True)
 
         with col_timeline:
@@ -137,8 +141,8 @@ def render_customer_intelligence_tab(df_filtered: pd.DataFrame):
             labels=dict(x="Order Month", y="Signup Cohort Month", color="Active Buyers"),
             x=cohort_pivot.columns,
             y=cohort_pivot.index,
-            color_continuous_scale="Blues",
+            color_continuous_scale="Tealgrn",
             title="Monthly Active Buyers by Signup Cohort"
         )
-        fig_heatmap.update_layout(template="plotly_dark", height=450, margin=dict(l=10, r=10, t=35, b=10))
+        fig_heatmap.update_layout(height=450, margin=dict(l=10, r=10, t=35, b=10), **theme_kwargs)
         st.plotly_chart(fig_heatmap, use_container_width=True)

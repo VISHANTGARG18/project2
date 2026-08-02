@@ -9,6 +9,7 @@ import streamlit as st
 import plotly.express as px
 from utils.recommendation_engine import compute_market_basket_rules
 from utils.helpers import fmt_currency, fmt_percent
+from .styling import get_plotly_theme_dict
 
 def render_market_basket_tab(df_filtered: pd.DataFrame):
     """Renders the Tab 4 Market Basket Explorer component."""
@@ -18,6 +19,9 @@ def render_market_basket_tab(df_filtered: pd.DataFrame):
     if df_filtered.empty:
         st.warning("No data available for active filters.")
         return
+
+    theme_mode = st.session_state.get('theme_mode', 'Dark Mode 🌙')
+    theme_kwargs = get_plotly_theme_dict(theme_mode)
 
     # 1. Interactive Sliders
     st.subheader("🎛️ Association Rule Parameters")
@@ -91,5 +95,5 @@ def render_market_basket_tab(df_filtered: pd.DataFrame):
             color_continuous_scale="Viridis",
             title="Rules Scatter (Confidence vs. Lift)"
         )
-        fig_rules.update_layout(template="plotly_dark", height=380, margin=dict(l=10, r=10, t=35, b=10))
+        fig_rules.update_layout(height=380, margin=dict(l=10, r=10, t=35, b=10), **theme_kwargs)
         st.plotly_chart(fig_rules, use_container_width=True)

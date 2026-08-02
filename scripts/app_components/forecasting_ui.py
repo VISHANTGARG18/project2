@@ -9,6 +9,7 @@ import streamlit as st
 import plotly.graph_objects as go
 from utils.forecasting import generate_monthly_forecast
 from utils.helpers import fmt_currency, fmt_percent
+from .styling import get_plotly_theme_dict
 
 def render_forecasting_tab(df_filtered: pd.DataFrame):
     """Renders the Tab 5 Forecasting Studio component."""
@@ -18,6 +19,9 @@ def render_forecasting_tab(df_filtered: pd.DataFrame):
     if df_filtered.empty:
         st.warning("No data available for active filters.")
         return
+
+    theme_mode = st.session_state.get('theme_mode', 'Dark Mode 🌙')
+    theme_kwargs = get_plotly_theme_dict(theme_mode)
 
     # 1. Interactive Forecasting Sliders
     st.subheader("🎛️ Forecasting Controls & Inflation Adjustments")
@@ -76,7 +80,7 @@ def render_forecasting_tab(df_filtered: pd.DataFrame):
         y=monthly_hist['net_revenue'],
         name="Historical Net Revenue",
         mode="lines+markers",
-        line=dict(color="#38BDF8", width=3)
+        line=dict(color="#00D09C", width=3.5, shape='spline')
     ))
 
     # Forecast Base Scenario
@@ -107,10 +111,10 @@ def render_forecasting_tab(df_filtered: pd.DataFrame):
     ))
 
     fig_fc.update_layout(
-        template="plotly_dark",
         height=400,
         margin=dict(l=20, r=20, t=35, b=20),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        **theme_kwargs
     )
     st.plotly_chart(fig_fc, use_container_width=True)
 
