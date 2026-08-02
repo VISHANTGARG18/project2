@@ -7,11 +7,11 @@ import pandas as pd
 import streamlit as st
 
 def render_sidebar_filters(df: pd.DataFrame):
-    """Renders the global sidebar filter controls and returns filtered DataFrame."""
+    """Renders the global sidebar filter controls and returns filtered DataFrame and theme."""
     st.sidebar.title("💎 Lumina Control Center")
     st.sidebar.markdown("*Omnichannel Filter Matrix*")
 
-    # Dark / Light Theme Toggle Simulation
+    # Dark / Light Theme Toggle
     theme_mode = st.sidebar.radio("Theme Mode", ["Dark Mode 🌙", "Light Mode ☀️"], index=0, horizontal=True)
 
     st.sidebar.markdown("---")
@@ -114,7 +114,8 @@ def render_sidebar_filters(df: pd.DataFrame):
         "segment": selected_segment,
         "search_product": search_product,
         "search_customer": search_customer,
-        "active_records": len(filtered_df)
+        "active_records": len(filtered_df),
+        "theme_mode": theme_mode
     }
 
     return filtered_df, filter_summary

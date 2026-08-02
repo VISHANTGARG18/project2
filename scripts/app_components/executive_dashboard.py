@@ -23,6 +23,8 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
         st.warning("⚠️ No sales transactions found matching the current global filter selection. Please adjust your date range or sidebar filters.")
         return
 
+    plotly_template = st.session_state.get('plotly_template', 'plotly_dark')
+
     # 1. Executive Alert Banners
     render_executive_alerts(df_filtered)
 
@@ -98,7 +100,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
         fillcolor='rgba(16, 185, 129, 0.1)'
     ))
     fig_trend.update_layout(
-        template="plotly_dark",
+        template=plotly_template,
         height=380,
         margin=dict(l=20, r=20, t=30, b=20),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -112,13 +114,13 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
     map_col, channel_col = st.columns([1.6, 1])
 
     with map_col:
-        map_type = st.radio("Map Style", ["Choropleth Map", "Bubble Map"], horizontal=True)
+        map_style_opt = st.radio("Map Style", ["Choropleth Map", "Bubble Map"], horizontal=True)
         country_agg = df_filtered.groupby(['store_country', 'store_region']).agg(
             net_revenue=('net_revenue', 'sum'),
             net_profit=('net_profit', 'sum')
         ).reset_index()
 
-        if map_type == "Choropleth Map":
+        if map_style_opt == "Choropleth Map":
             fig_map = px.choropleth(
                 country_agg,
                 locations="store_country",
@@ -141,7 +143,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
                 title="Global Profitability Bubble Map"
             )
 
-        fig_map.update_layout(template="plotly_dark", height=380, margin=dict(l=10, r=10, t=35, b=10))
+        fig_map.update_layout(template=plotly_template, height=380, margin=dict(l=10, r=10, t=35, b=10))
         st.plotly_chart(fig_map, use_container_width=True)
 
     with channel_col:
@@ -155,7 +157,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             color_discrete_sequence=["#38BDF8", "#10B981"],
             title="Online vs Retail Store Net Revenue & Profit"
         )
-        fig_chan.update_layout(template="plotly_dark", height=380, margin=dict(l=10, r=10, t=35, b=10))
+        fig_chan.update_layout(template=plotly_template, height=380, margin=dict(l=10, r=10, t=35, b=10))
         st.plotly_chart(fig_chan, use_container_width=True)
 
     # 6. Category Contribution & Top Performers
@@ -171,7 +173,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             color_discrete_sequence=px.colors.qualitative.Pastel,
             hole=0.4
         )
-        fig_cat.update_layout(template="plotly_dark", height=300, margin=dict(l=10, r=10, t=30, b=10))
+        fig_cat.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
         st.plotly_chart(fig_cat, use_container_width=True)
 
     with col_store:
@@ -184,7 +186,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             orientation="h",
             color_discrete_sequence=["#F59E0B"]
         )
-        fig_store.update_layout(template="plotly_dark", height=300, margin=dict(l=10, r=10, t=30, b=10))
+        fig_store.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
         st.plotly_chart(fig_store, use_container_width=True)
 
     with col_prod:
@@ -197,7 +199,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             orientation="h",
             color_discrete_sequence=["#8B5CF6"]
         )
-        fig_prod.update_layout(template="plotly_dark", height=300, margin=dict(l=10, r=10, t=30, b=10))
+        fig_prod.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
         st.plotly_chart(fig_prod, use_container_width=True)
 
     st.markdown("---")
