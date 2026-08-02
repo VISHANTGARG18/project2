@@ -33,6 +33,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Apply flagship Obsidian Dark theme CSS
+apply_custom_css("Dark Mode 🌙")
+
 # ---------------------------------------------------------
 # DATA LOADING WITH PERFORMANCE CACHING
 # ---------------------------------------------------------
@@ -45,12 +48,9 @@ if df_raw.empty:
     st.stop()
 
 # ---------------------------------------------------------
-# SIDEBAR FILTERS & DYNAMIC THEME SELECTION
+# SIDEBAR FILTERS
 # ---------------------------------------------------------
 df_filtered, filter_summary = render_sidebar_filters(df_raw)
-
-# Apply dynamic Light/Dark Mode CSS based on sidebar radio button
-apply_custom_css(filter_summary.get('theme_mode', 'Dark Mode 🌙'))
 
 # ---------------------------------------------------------
 # SYSTEM STATUS PANEL (HEADER)
@@ -63,7 +63,6 @@ status_html = f"""
     📊 <b>Rows Loaded</b>: {len(df_raw):,} &nbsp;|&nbsp; 
     🎯 <b>Active Filtered Records</b>: {filter_summary['active_records']:,} &nbsp;|&nbsp; 
     ⚡ <b>Query Speed</b>: {load_time:.3f}s &nbsp;|&nbsp; 
-    🎨 <b>Theme</b>: {filter_summary.get('theme_mode', 'Dark Mode 🌙')} &nbsp;|&nbsp;
     🌍 <b>Country</b>: {filter_summary['country']} &nbsp;|&nbsp; 
     📡 <b>Channel</b>: {filter_summary['channel']}
 </div>
