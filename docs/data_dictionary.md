@@ -5,7 +5,7 @@ This document details the data architecture, table schemas, field definitions, d
 ---
 
 ## 1. Table: `stores`
-Stores operational records for physical retail flagships and e-commerce digital channels.
+Stores operational records for physical retail flagships and e-commerce digital channels across global operational regions, states/provinces, and countries.
 
 | Column Name | Data Type | Constraints | Description | Sample Value |
 | :--- | :--- | :--- | :--- | :--- |
@@ -14,6 +14,8 @@ Stores operational records for physical retail flagships and e-commerce digital 
 | `channel` | `VARCHAR(20)` | `NOT NULL, CHECK ('Online', 'Retail Store')` | Sales fulfillment channel type. | `Retail Store` |
 | `region` | `VARCHAR(50)` | `NOT NULL, CHECK ('North America East', 'North America West', 'Europe Central', 'Asia Pacific')` | Global operational territory. | `North America East` |
 | `city` | `VARCHAR(50)` | `NOT NULL` | City where physical store or regional hub is based. | `New York` |
+| `state` | `VARCHAR(50)` | `NOT NULL` | State or province where store operates. | `New York` |
+| `country` | `VARCHAR(50)` | `NOT NULL` | Country where physical store or regional hub operates. | `United States` |
 | `manager_name` | `VARCHAR(100)`| `NOT NULL` | General Manager responsible for store performance. | `Marcus Vance` |
 
 ---

@@ -7,7 +7,7 @@ PRAGMA foreign_keys = ON;
 
 -- ----------------------------------------------------------------------------
 -- 1. STORES TABLE
--- Stores physical and online retail locations across global operational regions.
+-- Stores physical and online retail locations across global operational regions, states, and countries.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS stores (
     store_id INTEGER PRIMARY KEY,
@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS stores (
     channel VARCHAR(20) NOT NULL CHECK (channel IN ('Online', 'Retail Store')),
     region VARCHAR(50) NOT NULL CHECK (region IN ('North America East', 'North America West', 'Europe Central', 'Asia Pacific')),
     city VARCHAR(50) NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    country VARCHAR(50) NOT NULL,
     manager_name VARCHAR(100) NOT NULL
 );
 

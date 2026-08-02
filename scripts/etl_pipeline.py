@@ -38,12 +38,12 @@ def run_etl():
     cursor.executescript(schema_sql)
     conn.commit()
 
-    # 2. Ingest Stores
+    # 2. Ingest Stores (With State & Country columns)
     stores_csv = os.path.join(DATA_DIR, "stores.csv")
     with open(stores_csv, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
-        stores_rows = [(row["store_id"], row["store_name"], row["channel"], row["region"], row["city"], row["manager_name"]) for row in reader]
-    cursor.executemany("INSERT INTO stores VALUES (?, ?, ?, ?, ?, ?);", stores_rows)
+        stores_rows = [(row["store_id"], row["store_name"], row["channel"], row["region"], row["city"], row["state"], row["country"], row["manager_name"]) for row in reader]
+    cursor.executemany("INSERT INTO stores VALUES (?, ?, ?, ?, ?, ?, ?, ?);", stores_rows)
     print(f"Loaded {len(stores_rows)} rows into 'stores'")
 
     # 3. Ingest Products

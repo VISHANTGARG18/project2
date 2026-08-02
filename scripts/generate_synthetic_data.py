@@ -24,23 +24,23 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 # ---------------------------------------------------------
-# 1. GENERATE STORES
+# 1. GENERATE STORES (WITH STATE & COUNTRY COLUMNS)
 # ---------------------------------------------------------
 stores_data = [
-    (101, "Lumina E-Commerce Store", "Online", "North America East", "New York", "Sarah Jenkins"),
-    (102, "Lumina New York Flagship", "Retail Store", "North America East", "New York", "Marcus Vance"),
-    (103, "Lumina San Francisco Hub", "Retail Store", "North America West", "San Francisco", "Elena Rostova"),
-    (104, "Lumina Seattle Tech Retail", "Retail Store", "North America West", "Seattle", "David Kim"),
-    (105, "Lumina London Concept Store", "Retail Store", "Europe Central", "London", "Arthur Pendelton"),
-    (106, "Lumina Berlin Design Center", "Retail Store", "Europe Central", "Berlin", "Greta Weber"),
-    (107, "Lumina Tokyo Ginza Outlet", "Retail Store", "Asia Pacific", "Tokyo", "Kenji Sato"),
-    (108, "Lumina Sydney Harbour Retail", "Retail Store", "Asia Pacific", "Sydney", "Chloe Bennett")
+    (101, "Lumina E-Commerce Store", "Online", "North America East", "New York", "New York", "United States", "Sarah Jenkins"),
+    (102, "Lumina New York Flagship", "Retail Store", "North America East", "New York", "New York", "United States", "Marcus Vance"),
+    (103, "Lumina San Francisco Hub", "Retail Store", "North America West", "San Francisco", "California", "United States", "Elena Rostova"),
+    (104, "Lumina Seattle Tech Retail", "Retail Store", "North America West", "Seattle", "Washington", "United States", "David Kim"),
+    (105, "Lumina London Concept Store", "Retail Store", "Europe Central", "London", "England", "United Kingdom", "Arthur Pendelton"),
+    (106, "Lumina Berlin Design Center", "Retail Store", "Europe Central", "Berlin", "Berlin", "Germany", "Greta Weber"),
+    (107, "Lumina Tokyo Ginza Outlet", "Retail Store", "Asia Pacific", "Tokyo", "Tokyo", "Japan", "Kenji Sato"),
+    (108, "Lumina Sydney Harbour Retail", "Retail Store", "Asia Pacific", "Sydney", "New South Wales", "Australia", "Chloe Bennett")
 ]
 
 stores_file = os.path.join(DATA_DIR, "stores.csv")
 with open(stores_file, "w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
-    writer.writerow(["store_id", "store_name", "channel", "region", "city", "manager_name"])
+    writer.writerow(["store_id", "store_name", "channel", "region", "city", "state", "country", "manager_name"])
     writer.writerows(stores_data)
 
 print(f"Generated {len(stores_data)} stores in stores.csv")

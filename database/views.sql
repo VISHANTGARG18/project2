@@ -41,6 +41,8 @@ SELECT
     s.channel,
     s.region AS store_region,
     s.city AS store_city,
+    s.state AS store_state,
+    s.country AS store_country,
 
     -- Product Attributes
     p.product_id,
