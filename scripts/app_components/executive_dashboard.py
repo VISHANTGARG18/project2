@@ -11,6 +11,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from utils.metrics import calculate_kpis, calculate_kpi_deltas
 from utils.helpers import fmt_currency, fmt_currency_exact, fmt_percent, fmt_number
+from .styling import get_plotly_theme_dict
 from .executive_alerts import render_executive_alerts
 from .ai_insights import render_ai_executive_insights
 
@@ -23,7 +24,8 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
         st.warning("⚠️ No sales transactions found matching the current global filter selection. Please adjust your date range or sidebar filters.")
         return
 
-    plotly_template = st.session_state.get('plotly_template', 'plotly_dark')
+    theme_mode = st.session_state.get('theme_mode', 'Dark Mode 🌙')
+    theme_kwargs = get_plotly_theme_dict(theme_mode)
 
     # 1. Executive Alert Banners
     render_executive_alerts(df_filtered)
@@ -100,11 +102,11 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
         fillcolor='rgba(0, 184, 217, 0.08)'
     ))
     fig_trend.update_layout(
-        template=plotly_template,
         height=390,
         margin=dict(l=20, r=20, t=30, b=20),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        hovermode="x unified"
+        hovermode="x unified",
+        **theme_kwargs
     )
     st.plotly_chart(fig_trend, use_container_width=True)
 
@@ -143,7 +145,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
                 title="Global Profitability Bubble Map"
             )
 
-        fig_map.update_layout(template=plotly_template, height=380, margin=dict(l=10, r=10, t=35, b=10))
+        fig_map.update_layout(height=380, margin=dict(l=10, r=10, t=35, b=10), **theme_kwargs)
         st.plotly_chart(fig_map, use_container_width=True)
 
     with channel_col:
@@ -157,7 +159,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             color_discrete_sequence=["#00D09C", "#00B8D9"],
             title="Online vs Retail Store Net Revenue & Profit"
         )
-        fig_chan.update_layout(template=plotly_template, height=380, margin=dict(l=10, r=10, t=35, b=10))
+        fig_chan.update_layout(height=380, margin=dict(l=10, r=10, t=35, b=10), **theme_kwargs)
         st.plotly_chart(fig_chan, use_container_width=True)
 
     # 6. Category Contribution & Top Performers
@@ -173,7 +175,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             color_discrete_sequence=["#00D09C", "#00B8D9", "#FFB300"],
             hole=0.5
         )
-        fig_cat.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
+        fig_cat.update_layout(height=300, margin=dict(l=10, r=10, t=30, b=10), **theme_kwargs)
         st.plotly_chart(fig_cat, use_container_width=True)
 
     with col_store:
@@ -186,7 +188,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             orientation="h",
             color_discrete_sequence=["#00D09C"]
         )
-        fig_store.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
+        fig_store.update_layout(height=300, margin=dict(l=10, r=10, t=30, b=10), **theme_kwargs)
         st.plotly_chart(fig_store, use_container_width=True)
 
     with col_prod:
@@ -199,7 +201,7 @@ def render_executive_dashboard_tab(df_filtered: pd.DataFrame, df_raw: pd.DataFra
             orientation="h",
             color_discrete_sequence=["#00B8D9"]
         )
-        fig_prod.update_layout(template=plotly_template, height=300, margin=dict(l=10, r=10, t=30, b=10))
+        fig_prod.update_layout(height=300, margin=dict(l=10, r=10, t=30, b=10), **theme_kwargs)
         st.plotly_chart(fig_prod, use_container_width=True)
 
     st.markdown("---")

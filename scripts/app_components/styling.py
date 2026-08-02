@@ -1,13 +1,31 @@
 """
-Groww / Stripe Premium Aesthetic Theme & Dynamic CSS for Lumina Platform.
+Groww / Stripe Premium Aesthetic Theme & Dynamic CSS & Plotly Theme Helper for Lumina Platform.
 """
 
 import streamlit as st
+
+def get_plotly_theme_dict(theme_mode: str = "Dark Mode 🌙"):
+    """Returns exact Plotly layout configuration matching Light or Dark mode."""
+    is_light = "Light" in theme_mode
+    template = "plotly_white" if is_light else "plotly_dark"
+    font_color = "#0F172A" if is_light else "#F8FAFC"
+    sub_color = "#475569" if is_light else "#94A3B8"
+    grid_color = "#E2E8F0" if is_light else "rgba(255, 255, 255, 0.08)"
+
+    return {
+        "template": template,
+        "paper_bgcolor": "rgba(0,0,0,0)",
+        "plot_bgcolor": "rgba(0,0,0,0)",
+        "font": dict(color=font_color, family="Inter, sans-serif"),
+        "xaxis": dict(gridcolor=grid_color, tickfont=dict(color=sub_color), title_font=dict(color=font_color)),
+        "yaxis": dict(gridcolor=grid_color, tickfont=dict(color=sub_color), title_font=dict(color=font_color))
+    }
 
 def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
     """Injects high-end Groww / Stripe inspired CSS aesthetics into Streamlit app."""
     is_light = "Light" in theme_mode
 
+    st.session_state['theme_mode'] = theme_mode
     st.session_state['plotly_template'] = "plotly_white" if is_light else "plotly_dark"
 
     if is_light:
@@ -69,7 +87,7 @@ def apply_custom_css(theme_mode: str = "Dark Mode 🌙"):
             color: {sidebar_text} !important;
         }}
 
-        /* Streamlit Input Controls Override (Selectboxes, Date inputs, Text inputs) */
+        /* Streamlit Input Controls Override */
         div[data-baseweb="select"] > div, 
         div[data-baseweb="input"] > div, 
         .stDateInput input, 

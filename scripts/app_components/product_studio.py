@@ -10,6 +10,7 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 from utils.helpers import fmt_currency, fmt_percent, fmt_number
+from .styling import get_plotly_theme_dict
 
 def render_product_studio_tab(df_filtered: pd.DataFrame):
     """Renders the Tab 2 Product Intelligence Studio."""
@@ -20,7 +21,8 @@ def render_product_studio_tab(df_filtered: pd.DataFrame):
         st.warning("No data available for active filters.")
         return
 
-    plotly_template = st.session_state.get('plotly_template', 'plotly_dark')
+    theme_mode = st.session_state.get('theme_mode', 'Dark Mode 🌙')
+    theme_kwargs = get_plotly_theme_dict(theme_mode)
 
     # 1. Product Aggregation Matrix
     prod_agg = df_filtered.groupby(['product_name', 'category', 'subcategory']).agg(
@@ -90,7 +92,7 @@ def render_product_studio_tab(df_filtered: pd.DataFrame):
             title="Product Revenue vs. Net Profit (Bubble Size = Units Sold)"
         )
         fig_scatter.update_traces(textposition='top center')
-        fig_scatter.update_layout(template=plotly_template, height=420, margin=dict(l=10, r=10, t=35, b=10))
+        fig_scatter.update_layout(height=420, margin=dict(l=10, r=10, t=35, b=10), **theme_kwargs)
         st.plotly_chart(fig_scatter, use_container_width=True)
 
     with col_pareto:
@@ -104,7 +106,7 @@ def render_product_studio_tab(df_filtered: pd.DataFrame):
             title="ABC Category Product Counts",
             color_discrete_sequence=["#10B981", "#F59E0B", "#EF4444"]
         )
-        fig_pareto.update_layout(template=plotly_template, height=420, margin=dict(l=10, r=10, t=35, b=10))
+        fig_pareto.update_layout(height=420, margin=dict(l=10, r=10, t=35, b=10), **theme_kwargs)
         st.plotly_chart(fig_pareto, use_container_width=True)
 
     st.markdown("---")
@@ -169,5 +171,5 @@ def render_product_studio_tab(df_filtered: pd.DataFrame):
             ]
         }
     ))
-    fig_gauge.update_layout(template=plotly_template, height=280, margin=dict(l=20, r=20, t=40, b=20))
+    fig_gauge.update_layout(height=280, margin=dict(l=20, r=20, t=40, b=20), **theme_kwargs)
     st.plotly_chart(fig_gauge, use_container_width=True)
