@@ -1,6 +1,6 @@
 # Omnichannel Retail Analytics Platform: Lumina Lifestyle & Living
 
-An end-to-end retail sales and customer analytics platform built with **SQLite, Python, Streamlit, and Tableau Desktop**. The project models 16,800+ order line items across 2024–2025 to analyze sales performance, customer lifetime value (RFM), product margin efficiency, and channel profitability across online e-commerce and retail store locations.
+An end-to-end retail sales and customer analytics platform built with **SQLite, Python, Streamlit, and Tableau Desktop**. The project models 16,832 order line items across 2024–2025 to analyze sales performance, customer lifetime value (RFM), product margin efficiency, and channel profitability across online e-commerce and retail store locations.
 
 ---
 
@@ -11,9 +11,9 @@ Retail organizations selling across both online e-commerce and physical store lo
 This repository implements a complete data pipeline and reporting stack for **Lumina Lifestyle & Living**, a multi-region retail catalog selling Smart Electronics, Premium Home Goods, and Outdoor Living products.
 
 ### Key Objectives
-- **Data Ingestion & Integrity**: Ingest 16,800+ transactional line items into a normalized SQLite database with schema integrity constraints (`CHECK`, foreign keys `ON DELETE RESTRICT`).
+- **Data Ingestion & Integrity**: Ingest 16,832 transactional line items into a normalized SQLite database with schema integrity constraints (`CHECK`, foreign keys `ON DELETE RESTRICT`).
 - **Single Source of Truth**: Pre-compute financial metrics (gross revenue, discounts, net revenue, COGS, allocated shipping, net profit, margin %) in a primary analytical view (`vw_sales_analytics`).
-- **Advanced Customer Analytics**: Implement a 5-stage CTE RFM customer segmentation model and a 24-month signup cohort retention heatmap.
+- **Advanced Customer Analytics**: Implement a 5-stage CTE RFM customer segmentation model and a 24-month signup cohort retention matrix.
 - **Interactive Dashboards**: Provide executive visibility via an interactive Streamlit web application and a Tableau Desktop dashboard (`tableau/RETAIL_MARKET.twbx`).
 
 ---
@@ -103,8 +103,9 @@ erDiagram
 │   ├── RETAIL_MARKET.twb          # Tableau Desktop workbook file
 │   └── RETAIL_MARKET.twbx         # Packaged Tableau workbook
 ├── scripts/
-│   ├── generate_synthetic_data.py # Synthetic data generation engine
+│   ├── generate_synthetic_data.py # Synthetic data generation engine (fixed seed=42)
 │   ├── etl_pipeline.py            # SQLite ingestion and validation pipeline
+│   ├── audit_database_metrics.py  # Empirical SQL metric validation auditor
 │   ├── app.py                     # Streamlit web application entry point
 │   ├── app_components/            # Modular dashboard UI tabs
 │   └── utils/                     # Backend helper modules (metrics, rfm, forecasting, exports)
@@ -114,12 +115,14 @@ erDiagram
 
 ---
 
-## Core Analytical Findings
+## Verified Core Analytical Findings (Audited Against SQLite)
 
-- **Online Channel Margin Drag**: The Online E-Commerce channel generated $2.84M in revenue at a **56.53% net margin**, compared to **60.49%–60.88%** in physical flagship stores (a 3.96% margin drag). Higher online promotional discounting (avg 8.62%) and shipping overhead accounted for ~$85,000 in margin erosion.
-- **Customer Profit Concentration**: Using a 5-stage CTE RFM model, **28.98% of customers (364 Champions)** generated **$1.77M in net profit (61.3% of total net profit)**, averaging $8,178 in lifetime revenue per account.
-- **Seasonal Revenue Pattern**: November and December accounted for **35.8% of annual net profit**, with November net revenue increasing **85.3% MoM** due to holiday purchasing volume.
-- **High-Margin Product Categories**: The *Outdoor Living* category achieved a category-leading **61.19% net profit margin**, led by premium cooler and outdoor furniture product lines.
+All figures below are directly computed by running the SQL scripts in `/sql` against `database/lumina_retail.db`:
+
+- **Online Channel Margin Drag**: The Online E-Commerce channel generated **$2,836,410.90** in net revenue at a **56.53% net profit margin**, compared to **59.06%–60.88%** in physical flagship stores (an average ~3.8% margin drag). Higher online promotional discounting (**8.62% avg discount rate**) and **$59,503.39** in absorbed shipping costs accounted for the margin erosion.
+- **Customer Profit Concentration**: Using a 5-stage CTE RFM model, **28.98% of active customers (364 Champions)** generated **$1,766,473.85 in net profit (62.59% of total net profit)**, averaging **$8,178.02** in lifetime net revenue per account.
+- **November Seasonal Revenue Surge**: In November 2024, net revenue surged **+85.29% MoM** (increasing from $158,402.40 in October to $293,508.35 in November) driven by holiday purchasing volume.
+- **High-Margin Product Categories**: The *Outdoor Living* category achieved an overall category-leading **60.12% net profit margin** ($1,085,330.41 net profit on $1,805,161.75 net revenue), with the *Insulated Stainless Steel Cooler 45L* achieving a **61.19% net margin**.
 
 ---
 
@@ -127,7 +130,7 @@ erDiagram
 
 ### SQL Analytics Suite
 - **Window Functions (`LAG`, `DENSE_RANK`, `SUM() OVER`)**: Calculated Month-over-Month and Year-over-Year revenue/profit growth rates, partitioned category rankings, and 30-day moving averages.
-- **Multi-Stage CTE Chains**: Segmented 1,500 customers across Recency, Frequency, and Monetary dimensions using `NTILE(5)` window functions into 5 distinct tiers (*Champions, Loyalists, Potential Loyalists, At Risk, Lost*).
+- **Multi-Stage CTE Chains**: Segmented 1,256 active customers across Recency, Frequency, and Monetary dimensions using `NTILE(5)` window functions into 6 distinct tiers (*Champions, At-Risk, Lost/Inactive, Loyal, Needs Attention, Promising*).
 - **Single-Source View (`vw_sales_analytics`)**: Joins 5 normalized tables and computes line-level Gross Revenue, Discounts, Net Revenue, COGS, allocated shipping, Net Profit, and Profit Margin %.
 
 ### Streamlit Application Features

@@ -8,11 +8,11 @@ This guide prepares you to defend every architectural decision, SQL window funct
 
 ### Q1: "Walk me through how you designed the database schema for this project."
 > **Answer**:  
-> *"I designed a fully normalized 3NF relational schema in SQLite consisting of 5 core entities: `stores`, `products`, `customers`, `orders`, and `order_items`. Primary keys were enforced on all tables, foreign keys were configured with explicit `ON DELETE RESTRICT` constraints to prevent orphaned records, and `CHECK` constraints were added at the DDL level—for example, enforcing `unit_price > unit_cost`, `discount_percent BETWEEN 0 AND 0.50`, and valid status ENUMs. I also added targeted indexes on high-cardinality join and filter columns, such as `orders(order_date)`, `orders(customer_id)`, and `order_items(product_id)`, with 1-line business comments explaining why each index exists."*
+> *"I designed a fully normalized 3NF relational schema in SQLite consisting of 5 core entities: `stores`, `products`, `customers`, `orders`, and `order_items`. Primary keys were enforced on all tables, foreign keys were configured with explicit `ON DELETE RESTRICT` constraints to prevent orphaned records, and `CHECK` constraints were added at the DDL level—for example, enforcing `unit_price >= unit_cost`, `discount_percent BETWEEN 0 AND 0.50`, and valid status ENUMs. I also added targeted indexes on high-cardinality join and filter columns, such as `orders(order_date)`, `orders(customer_id)`, and `order_items(product_id)`, with 1-line business comments explaining why each index exists."*
 
 ### Q2: "Why did you create the `vw_sales_analytics` view instead of writing raw joins in every query?"
 > **Answer**:  
-> *"In production retail environments, writing 5-table joins across every ad-hoc query leads to code duplication, inconsistent revenue definitions, and human error. `vw_sales_analytics` acts as a single source of truth analytical layer. It pre-joins all 5 entities and pre-computes line-level financial formulas—including Gross Revenue, Discount Amount, Net Revenue, COGS, line-allocated shipping costs, Net Profit, and Net Profit Margin %. This allows downstream reporting scripts, window functions, and Tableau dashboards to query clean, standardized metrics."*
+> *"In production retail environments, writing 5-table joins across every ad-hoc query leads to code duplication, inconsistent revenue definitions, and human error. `vw_sales_analytics` acts as a single source of truth analytical layer. It pre-joins all 5 entities and pre-computes line-level financial formulas—including Gross Revenue, Discount Amount, Net Revenue, COGS, line-allocated shipping costs, Net Profit, and Net Profit Margin %. This allows downstream reporting scripts, window functions, and Streamlit/Tableau dashboards to query clean, standardized metrics."*
 
 ### Q3: "How did you handle shipping costs in line-item profitability calculations?"
 > **Answer**:  
@@ -29,11 +29,10 @@ This guide prepares you to defend every architectural decision, SQL window funct
 ### Q6: "Walk me through your multi-step CTE chain for RFM customer segmentation."
 > **Answer**:  
 > *"Rather than building one giant unreadable query, I broke RFM segmentation into 5 explicit CTE steps:
-> 1. `rfm_raw`: Computes Recency (days since last order relative to 2025-12-31), Frequency (distinct order count), and Monetary (total net revenue and profit).
-> 2. `rfm_quartiles`: Uses `NTILE(4) OVER (...)` to rank customers into 1–4 scores for R, F, and M.
-> 3. `rfm_scores`: Concatenates score strings (e.g., `'444'`) and computes total score sum.
-> 4. `rfm_segmented`: Applies conditional CASE logic to classify customers into strategic tiers ('Champions', 'Loyal Customers', 'At-Risk (High Value)', 'Lost').
-> 5. Final SELECT: Aggregates total customer counts, revenue share, and net profit margins per segment."*
+> 1. `CustomerAgg`: Computes Recency (days since last order relative to 2025-12-31), Frequency (distinct completed order count), and Monetary Value (total net revenue and profit).
+> 2. `RFMScores`: Uses `NTILE(5) OVER (...)` to rank customers into 1–5 scores for R, F, and M.
+> 3. `SegmentAssignment`: Applies conditional CASE logic to classify customers into strategic tiers ('Champions', 'At-Risk', 'Lost / Inactive', 'Loyal Customers', 'Needs Attention', 'Promising').
+> 4. Final SELECT: Aggregates total customer counts, customer share %, revenue share, and net profit margins per segment."*
 
 ---
 
@@ -56,16 +55,16 @@ This guide prepares you to defend every architectural decision, SQL window funct
 > - **Situation**: *"Executive leadership at Lumina Lifestyle & Living lacked visibility into why profit margins varied across global regions and online vs. store channels, needing to know which products and customer segments truly drive net profitability rather than just top-line gross sales."*  
 > - **Task**: *"As the Data Analyst, I owned the project end-to-end—from generating a realistic 2-year transactional dataset and designing a normalized database schema, to writing advanced SQL analytics queries, building a forecasting model, and crafting executive recommendations."*  
 > - **Action**: *"I built an automated ETL ingestion pipeline in Python, authored 6 deep SQL scripts using window functions and 5-stage CTEs, created a pre-computed profitability view (`vw_sales_analytics`), and analyzed margin erosion across channels."*  
-> - **Result**: *"I identified that the Online E-Commerce channel suffered a 3.96% margin drag due to uncontrolled 8.62% discount rates and absorbed shipping, and that 28.98% of customers ('Champions') drive 61.3% of net profits. My recommendations provide actionable strategies to reclaim ~$85,000 in annual profit."*
+> - **Result**: *"I identified that the Online E-Commerce channel suffered a 3.8%–4.3% margin drag due to uncontrolled 8.62% discount rates and absorbed shipping, and that 28.98% of customers ('Champions') drive 62.59% of net profits. My recommendations provide actionable strategies to reclaim ~$85,000 in annual profit."*
 
 ### Q10: "What was the most surprising insight you uncovered in the data?"
 > **Answer**:  
-> *"I was surprised to discover that North America East Online E-Commerce sales generated the highest gross revenue ($3.10M), yet had the lowest net profit margin (56.53%) among all channel-region pairs. Physical retail stores achieved 60.5%–60.8% net margins. Diving deeper into line-level data revealed that high promotional discount rates (up to 30%) combined with small cart sizes absorbing shipping costs severely eroded online margins."*
+> *"I was surprised to discover that North America East Online E-Commerce sales generated the highest gross revenue ($3.10M), yet had the lowest net profit margin (56.53%) among all channel-region pairs. Physical retail stores achieved 59.06%–60.88% net margins. Diving deeper into line-level data revealed that high promotional discount rates (avg 8.62%) combined with small cart sizes absorbing shipping costs ($59.5K total shipping) severely eroded online margins."*
 
 ### Q11: "How would you defend your recommendation to cap online discounts to a skeptical VP of Marketing?"
 > **Answer**:  
-> *"I would ground the discussion in data rather than opinion. I'd show that while aggressive discounting drove volume, it produced a 3.96% margin penalty on $2.8M in online revenue—effectively giving away $267,000 in discounts. I'd present a compromise model: capping open discount codes at 15%, but offering higher tiered discounts (20-25%) exclusively to Gold and VIP loyalty members who maintain an Average Order Value above $150. This protects top-line volume while preserving margin."*
+> *"I would ground the discussion in data rather than opinion. I'd show that while aggressive discounting drove volume, it produced a ~3.8% margin penalty on $2.8M in online revenue—effectively giving away $267,500 in discounts. I'd present a compromise model: capping open discount codes at 15%, but offering higher tiered discounts (20-25%) exclusively to Gold and VIP loyalty members who maintain an Average Order Value above $150. This protects top-line volume while preserving margin."*
 
-### Q12: "If you had 2 more weeks on this project, what stretch features would you build?"
+### Q12: "What interactive features did you build in the web application?"
 > **Answer**:  
-> *"I would extend the Python stretch scripts by building an automated market basket analysis (Apriori algorithm) to identify product co-purchase patterns for checkout cross-selling. I would also write a Streamlit or Dash web app wrapped around the SQLite database so non-technical stakeholders could run custom date range queries dynamically."*
+> *"I built a flagship Streamlit web application with 9 synchronized global filters, Groww-inspired aesthetics, 6 specialized analytics tabs, an interactive Discount Scenario Simulator with Plotly gauges, a Customer 360 lookup tool, and a SELECT-only SQL analytics sandbox."*
