@@ -36,9 +36,9 @@ This document presents **7 data-backed strategic findings** derived from analyzi
 
 ---
 
-## Finding 5: Outdoor Living Category Achieves Top Profitability Efficiency (60.12% Overall Net Margin) Led by Cooler & Grill Lines
+## Finding 5: Outdoor Living & Smart Electronics Lead Category Margin Performance
 
-- **Data Insight**: The **Outdoor Living** category generated **$1,805,161.75 in net revenue** ($1,085,330.41 net profit) with a category-leading overall net profit margin of **60.12%**. The top individual margin performers were the *Insulated Stainless Steel Cooler 45L* (**61.19% net margin**) and the *Portable Stainless Steel Smokeless Grill* (**60.24% net margin**).
+- **Data Insight**: The Outdoor Living and Smart Electronics categories are essentially tied as the highest-margin categories (58.82% and 58.85% respectively), both outperforming Premium Home Goods (56.62%). At the product level, the Insulated Stainless Steel Cooler 45L stands out with a 61.19% margin.
 - **Root Cause**: Low manufacturing unit cost ($60.00 cost vs. $175.00 price for Cooler) combined with minimal price discounting (avg discount rate 7.02%–7.43%).
 - **Executive Recommendation**: Expand product line extensions in Outdoor Gear & Accessories (e.g. premium cooler accessories, grill cover bundles) during Q2 to leverage high brand equity and margin efficiency.
 

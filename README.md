@@ -122,7 +122,7 @@ All figures below are directly computed by running the SQL scripts in `/sql` aga
 - **Online Channel Margin Drag**: The Online E-Commerce channel generated **$2,836,410.90** in net revenue at a **56.53% net profit margin**, compared to **59.06%–60.88%** in physical flagship stores (an average ~3.8% margin drag). Higher online promotional discounting (**8.62% avg discount rate**) and **$59,503.39** in absorbed shipping costs accounted for the margin erosion.
 - **Customer Profit Concentration**: Using a 5-stage CTE RFM model, **28.98% of active customers (364 Champions)** generated **$1,766,473.85 in net profit (62.59% of total net profit)**, averaging **$8,178.02** in lifetime net revenue per account.
 - **November Seasonal Revenue Surge**: In November 2024, net revenue surged **+85.29% MoM** (increasing from $158,402.40 in October to $293,508.35 in November) driven by holiday purchasing volume.
-- **High-Margin Product Categories**: The *Outdoor Living* category achieved an overall category-leading **60.12% net profit margin** ($1,085,330.41 net profit on $1,805,161.75 net revenue), with the *Insulated Stainless Steel Cooler 45L* achieving a **61.19% net margin**.
+- **High-Margin Product Categories**: The Outdoor Living and Smart Electronics categories are essentially tied as the highest-margin categories (58.82% and 58.85% respectively), both outperforming Premium Home Goods (56.62%). At the product level, the Insulated Stainless Steel Cooler 45L stands out with a 61.19% margin.
 
 ---
 
