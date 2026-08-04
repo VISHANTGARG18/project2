@@ -3,6 +3,7 @@
 [![Database](https://img.shields.io/badge/Database-SQLite3-003B57?style=flat&logo=sqlite)](database/schema.sql)
 [![Python](https://img.shields.io/badge/ETL%20%26%20Data-Python%203.11-3776AB?style=flat&logo=python)](scripts/generate_synthetic_data.py)
 [![SQL](https://img.shields.io/badge/SQL-Advanced%20ANSI-FF6F00?style=flat&logo=databricks)](sql/)
+[![Tableau](https://img.shields.io/badge/Dashboard-Tableau%20Desktop-E97627?style=flat&logo=tableau)](tableau/)
 [![Web App](https://img.shields.io/badge/Platform-Streamlit%20Executive%20App-FF4B4B?style=flat&logo=streamlit)](scripts/app.py)
 
 ---
@@ -83,12 +84,7 @@ erDiagram
 
 ```
 retil project/
-├── data/
-│   ├── customers.csv              # 1,500 customer demographic & segment records
-│   ├── products.csv               # 20 product catalog items with unit costs & prices
-│   ├── stores.csv                 # 8 online and physical flagship stores across 5 countries & 7 states
-│   ├── orders.csv                 # 8,782 daily orders spanning 2 full years (2024–2025)
-│   └── order_items.csv            # 16,832 granular line items with discounts & quantities
+├── data/                          # 5 customer demographic, store, and order CSV datasets (16,832 line items)
 ├── database/
 │   ├── schema.sql                 # Fully normalized DDL with PK/FK, CHECKs & annotated indexes
 │   ├── views.sql                  # Single-source-of-truth analytical view: vw_sales_analytics
@@ -101,6 +97,9 @@ retil project/
 │   ├── 04_rfm_segmentation.sql               # 5-stage CTE chain RFM customer segmentation
 │   ├── 05_regional_channel_margins.sql       # Channel vs. region discount & margin comparison
 │   └── 06_moving_averages_running_totals.sql # 7-day & 30-day moving averages & YTD totals
+├── tableau/                       # Tableau Workbooks & Dashboards
+│   ├── RETAIL_MARKET.twb          # Tableau XML Workbook layout
+│   └── RETAIL_MARKET.twbx         # Packaged Tableau Workbook
 ├── scripts/
 │   ├── generate_synthetic_data.py # Synthetic data generator modeling seasonal noise & returns
 │   ├── etl_pipeline.py            # Automated ingestion & validation script into SQLite
@@ -120,62 +119,38 @@ retil project/
 
 ---
 
-## 4. Platform Tabs & Enterprise Features
+## 4. Tableau Dashboard & Platform Tabs
 
-1. **🏠 Executive Overview Command Center**:
-   - 8 Large Groww-Style Metric Cards with Deltas & arrow indicators.
-   - Automated alert banners flagging profit margin drops & regional store drops.
-   - AI Executive Insights engine generating strategic directives.
-   - Plotly smooth spline trend graphs, Global Choropleth & Bubble Maps, Channel comparison bars, and Category contribution pie chart.
+### 📊 Tableau Desktop Workbook (`tableau/`)
+- **Dashboard**: `Lumina Retail — Sales & Profitability Overview, 2024–2026`
+- **Worksheets**:
+  - `TOTAL REVENUE` / `TOTAL PROFIT` / `TOTAL ORDERS` Executive KPI Banner Cards.
+  - `Monthly Sales Trend` Time-series line chart.
+  - `Global Regional Sales.` Geographic Map.
+  - `Channel Profitability` Online E-Commerce vs Physical Flagship Store comparison.
+  - `Top 10 Products by Profit` Ranked bar chart.
 
-2. **📦 Product Intelligence Studio**:
-   - Searchable product table with ABC classification.
-   - Profit vs. Revenue Scatter Plot (bubble size = units sold).
-   - Pareto 80/20 Analysis chart.
-   - **Real-Time Discount Scenario Simulator** with Plotly gauges.
-
-3. **👥 Customer Analytics & 360° Profile**:
-   - **Customer 360 Individual Lookup Tool**: Search any customer by name, email, or ID to inspect lifetime spend, loyalty score (1-100), favorite category, and order history timeline.
-   - RFM Segment Distribution chart.
-   - 24-Month Cohort Retention Heatmap.
-
-4. **🛒 Market Basket Explorer**:
-   - Support, Confidence, and Lift sliders with Product Bundle Recommender.
-
-5. **📈 Forecasting Studio**:
-   - YoY growth, confidence interval bounds, inflation, and discount policy sliders.
-   - Optimistic, Base, and Pessimistic scenario curves and projection tables.
-
-6. **🧠 SQL Analytics Lab & Exporter**:
-   - Interactive SQL sandbox with preloaded queries.
-   - **SELECT-Only Security Validator** blocking dangerous commands (`DROP`, `DELETE`, `ALTER`, `TRUNCATE`).
-   - Multi-format report exporter (CSV, Excel, Markdown, HTML).
+### 💻 Streamlit Web Application (`scripts/app.py`)
+1. **🏠 Executive Overview Command Center**: 8 Groww-Style Metric Cards, Alert banners, 5 AI Insights, Plotly smooth splines, Global Choropleth & Bubble Maps.
+2. **📦 Product Intelligence Studio**: Searchable catalog table, ABC classification, Pareto 80/20 analysis chart, Real-Time Discount Simulator.
+3. **👥 Customer Analytics & 360° Profile**: Customer 360 Individual Lookup Tool, RFM segment distribution, 24-Month Cohort Retention Heatmap.
+4. **🛒 Market Basket Explorer**: Support/Confidence/Lift sliders, Product Bundle Cross-Sell Recommender.
+5. **📈 Forecasting Studio**: YoY growth, confidence interval, inflation sliders driving Optimistic, Base, and Pessimistic scenario curves.
+6. **🧠 SQL Analytics Lab & Exporter**: Interactive SQL sandbox, SELECT-only security engine, CSV/Excel/Markdown/HTML report exporters.
 
 ---
 
-## 5. Key Strategic Business Insights
-
-1. **Online Channel Margin Drag (3.96% Erosion)**:  
-   The Online E-Commerce channel generated $2.84M in revenue but achieved a **56.53% net margin**, compared to **60.49%–60.88%** in physical flagship stores. Uncontrolled online discounting (8.62% avg discount rate) and absorbed shipping costs eroded ~$85,000 in bottom-line profits.
-2. **RFM "Champions" Profit Concentration (61.3%)**:  
-   Applying 5-stage layered CTE RFM customer segmentation identified that **28.98% of customers (364 Champions)** contribute **$1.77M in net profit (61.3% of total)** with an average customer spend of $8,178.02.
-3. **Market Basket Cross-Selling**:  
-   Market basket association mining revealed strong product pairs with high Lift ratios (e.g. *Lumina Standing Desk Pro* co-purchased with *Aura Ambient LED Desk Lamp*), enabling automated checkout bundle discounts.
-4. **Q4 Seasonal Peak (35.8% Revenue)**:  
-   November and December drive over one-third of annual net profits, surging **85.3% MoM** in November due to holiday electronics and gift purchases.
-
----
-
-## 6. Quickstart Setup & Execution Guide
+## 5. Quickstart Setup & Execution Guide
 
 ### Prerequisites
 - Python 3.8+
 - SQLite3 CLI
+- Tableau Desktop / Tableau Reader (optional)
 
 ### Step 1: Clone Repository & Generate Dataset
 ```bash
-git clone https://github.com/VISHANTGARG18/project2.git
-cd project2
+git clone https://github.com/VISHANTGARG18/retail-sales-analytics.git
+cd retail-sales-analytics
 
 # Generate synthetic transaction dataset (16,800+ line items)
 python3 scripts/generate_synthetic_data.py
@@ -195,10 +170,10 @@ streamlit run scripts/app.py
 
 ---
 
-## 7. Resume & Portfolio Bullet Points
+## 6. Resume & Portfolio Bullet Points
 
 - **Engineered an end-to-end retail executive analytics platform** in SQLite & Streamlit querying 16,800+ line items across 2 full years (2024–2025), pre-computing metrics via `vw_sales_analytics`.
+- **Designed interactive Tableau Workbooks & Dashboards** (`tableau/RETAIL_MARKET.twbx`) visualizing regional profit margin efficiency, channel performance, and top product category drivers.
 - **Authored advanced SQL analytics suite** utilizing window functions (`LAG`, `DENSE_RANK`, `SUM() OVER`) and multi-step CTE chains to calculate MoM/YoY growth rates, product category rankings, and 30-day moving average revenue trends.
 - **Developed a 5-stage CTE RFM customer segmentation model** classifying 1,500 customers into strategic tiers, revealing that 28.98% of customers ("Champions") generated 61.3% of total net profit ($1.77M).
 - **Built a Market Basket Association Engine & Discount Simulator** in Python computing Support, Confidence, and Lift metrics to identify high-converting product checkout cross-sell bundles.
-- **Created a flagship Streamlit web application** with Groww-inspired aesthetics, 9 synchronized global filters, 6 specialized analytics tabs, SELECT-only SQL sandbox, and multi-format report exporters.
